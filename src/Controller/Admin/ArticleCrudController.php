@@ -7,9 +7,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticleCrudController extends AbstractCrudController
 {
@@ -28,6 +30,10 @@ class ArticleCrudController extends AbstractCrudController
             DateField::new('dateAjout', 'Date d\'ajout')->renderAsNativeWidget(false),
             AssociationField::new('utilisateur', 'Auteur')->autocomplete(),
             AssociationField::new('categories', 'Catégories')->autocomplete(),
+            ImageField::new('urlImage', 'Image')->setUploadDir('public/asset/images/')->setBasePath('asset/images/')
+            ->setUploadedFileNamePattern(
+                fn (UploadedFile $file): string => sprintf('upload_%d_%s.%s', random_int(1, 999), $file->getFilename(), $file->guessExtension()))
+            ,
         ];
     }
    

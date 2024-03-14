@@ -31,6 +31,9 @@ class Article
     #[ORM\ManyToMany(targetEntity: Categorie::class)]
     private Collection $categories;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $urlImage = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -109,6 +112,18 @@ class Article
     public function removeCategory(Categorie $category): static
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getUrlImage(): ?string
+    {
+        return $this->urlImage;
+    }
+
+    public function setUrlImage(?string $urlImage): static
+    {
+        $this->urlImage = $urlImage;
 
         return $this;
     }
