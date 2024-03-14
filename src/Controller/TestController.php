@@ -12,12 +12,7 @@ class TestController extends AbstractController
     public function index($nom): Response
     {
         return $this->render('test/index.html.twig', [
-            'nom' => $nom,
-            'tableau' => [
-                ["route"=> "/", "label"=> "home"],
-                ["route"=> "/test", "label"=> "test"],
-                ["route"=> "/hello", "label"=> "hello"],
-            ], 
+            'nom' => $nom, 
         ]);
     }
 
@@ -44,11 +39,6 @@ class TestController extends AbstractController
 
         return $this->render('test/calcul.html.twig',[
             'resultat' => $resultat,
-            'tableau' => [
-                ["route"=> "/", "label"=> "home"],
-                ["route"=> "/test", "label"=> "test"],
-                ["route"=> "/hello", "label"=> "hello"],
-            ],
             'nbr1' => $nbr1,
             'nbr2' => $nbr2,
         ]);

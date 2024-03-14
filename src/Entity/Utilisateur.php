@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 class Utilisateur
@@ -14,15 +15,35 @@ class Utilisateur
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Votre nom doit contenir au moins {{ limit }} caractères',
+        maxMessage: 'Votre nom de doit pas contenir plus de {{ limit }} caractères',
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Votre prénom doit contenir au moins {{ limit }} caractères',
+        maxMessage: 'Votre prénom de doit pas contenir plus de {{ limit }} caractères',
+    )]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Email(
+        message: 'Le mail suivant {{ value }} n\'est pas valide.',
+    )]
     private ?string $email = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\Regex(
+        pattern: "/(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{12,}/",
+        match: true,
+        message: 'minimum 12 caractères, lettres minuscules, majuscules et nombres.',
+    )]
     private ?string $password = null;
 
 

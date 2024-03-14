@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un exemple{% endblock %}
+
+{% block body %}
+    {{ form_start(formulaire) }}
+    {{ form_row(formulaire.name) }}
+    {{ form_row(formulaire.value) }}
+    {{ form_rest(formulaire) }}
+    <input type="submit" value="Ajouter">
+    {{ form_end(formulaire) }}
+    {% include "_componants/_toast.html.twig" %}
+{% endblock %}

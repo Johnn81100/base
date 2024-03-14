@@ -1,24 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter un Utilisateur{% endblock %}
+{% block title %}Ajout categorie{% endblock %}
 
 {% block body %}
 
-{# {% for label, messages in app.flashes %}
-    {% for message in messages %}
-        <p>{{ message }}</p>
-    {% endfor %}
-{% endfor %} #}
     {{ form_start(form, {'attr': {"class":"w-full max-w-md mx-auto p-6 mt-24"} } ) }}
         {{ form_label(form.nom) }}
         {{ form_widget(form.nom) }}
-        {{ form_label(form.prenom) }}
-        {{ form_widget(form.prenom) }}
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email) }}
-        {{ form_label(form.password) }}
-        {{ form_widget(form.password) }}
-        {{ form_rest(form) }}
         <input type="submit" value="Ajouter" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
     {{ form_end(form) }}
     {% include "_componants/_toast.html.twig" %}
