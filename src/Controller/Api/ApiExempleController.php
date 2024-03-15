@@ -59,4 +59,37 @@ class ApiExempleController extends AbstractController
         //retourner un json avec l'exemple
         return $this->json($data, $code, ['Access-Control-Allow-Origin' => '*']);
     }
+
+    #[Route('/api/exemple/add', name: 'app_api_exemple_add', methods:'POST')]
+    public function addExemple(Request $request) :Response 
+    {   
+        try {
+            //récupération json
+            $json = $request->getContent();
+            //convertir en objet
+            $data = $this->serializer->deserialize($json, Exemple::class,'json');
+            //test si l'exemple existe déja
+            if($this->exempleRepository->findOneBy(["name" => $data->getName(), "value" => $data->getValue()])) {
+                $message = ["error" => "L'exemple existe déja"];
+                $code = 400;
+            }
+            //test si l'exemple n'existe pas
+            else{
+                $message = ["confirm" => "l'exemple à été ajouté en BDD", "exemple"=> $data] ;
+                $code = 200; 
+                //persister
+                $this->em->persist($data);
+                //ajouter en BDD
+                $this->em->flush();
+            }
+        } catch (\Throwable $th) {
+            $message = ["error" => $th->getMessage()];
+            $code = 400;
+        }
+        
+        //retourner un json de reponse
+        return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
+    }
+
+    
 }
