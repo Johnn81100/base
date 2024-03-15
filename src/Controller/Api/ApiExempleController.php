@@ -17,8 +17,11 @@ class ApiExempleController extends AbstractController{
 
     }
 
-    #[Route('/api/exemple/all', name:'app_api_exemple_all')]
+    #[Route('/api/exemple/all', name:'app_api_exemple_all', methods:'GET')]
     public function getAllExemple() : Response {
-        return $this->json(["nom"=>"mathieu"]);
+        //tableau liste des exemples
+        $exemples = $this->exempleRepository->findAll();
+        //retourner un json avec les exemples
+        return $this->json($exemples,200,['Access-Control-Allow-Origin' => '*']);
     }
 }
