@@ -100,7 +100,7 @@ class ApiExempleController extends AbstractController
             //convertir le json en tableau
             $data = $this->serializer->decode($json, "json");
             //récupérer l'objet exemple
-            $oldExemple = $this->exempleRepository->findOneBy(["name"=>$data["name"], "value" => $data["value"] ]);
+            $oldExemple = $this->exempleRepository->findOneBy(["name"=> $data["name"], "value" => $data["value"] ]);
             //test si l'objet exemple existe
             if($oldExemple){
                 //setter les nouvelles valeurs
@@ -119,6 +119,50 @@ class ApiExempleController extends AbstractController
                 $code = 400;
             }
 
+        } catch (\Throwable $th) {
+            $message = ["error" => $th->getMessage()];
+            $code = 400;
+        }
+        //retourner un json de reponse
+        return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
+    }
+
+
+    #[Route('/api/exemple/updatev2', name:'app_api_exemple_updatev2', methods:'PUT')]
+    public function updateExempleV2(Request $request) :Response 
+    {
+        try {
+            //récupérer le json
+            $json = $request->getContent();
+            //transformer en objet
+            $data = $this->serializer->decode($json, 'json');
+         
+            //récupérer l'objet exemple à modifier
+            $exemple = $this->exempleRepository->find($data["id"]);    
+            //test si exemple existe
+            if($exemple) {
+                //test si les données sont identiques
+                if($exemple->getName() == $data["name"] and $exemple->getValue() == $data["value"]) {
+                    $message = ["error" => "Les données sont identiques"];
+                    $code = 400;
+                }
+                //les données sont différentes
+                else {
+                    $exemple->setName($data["name"]);
+                    $exemple->setValue($data["value"]);
+                    //persister les données
+                    $this->em->persist($exemple);
+                    //enregistrer en BDD
+                    $this->em->flush();
+                    $message = ["confirm" => "l'exemple à été mis a jour en BDD", "exemple"=> $exemple] ;
+                    $code = 200; 
+                }
+            }
+            //test si l'exemple n'existe pas
+            else{
+                $message = ["error" => "l'exemple n'existe pas"];
+                $code = 400;
+            }   
         } catch (\Throwable $th) {
             $message = ["error" => $th->getMessage()];
             $code = 400;

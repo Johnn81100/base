@@ -64,7 +64,7 @@ class CategorieService
         //récupération de la liste des erreurs
         $errors = $this->validator->validate($categorie);
         //test si la catégorie n'est pas valide
-        count($errors) > 0 ? throw new \Exception($errors[0]->getMessage(), 2) : null;
+        count($errors) > 0 ? throw new \Exception( $errors[0]->getMessage(),2) : null;
     }
 
     public function categorieExist(Categorie $categorie): void
