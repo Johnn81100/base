@@ -9,12 +9,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Exemple;
 use App\Repository\ExempleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 
 class ApiExempleController extends AbstractController
 {
 
-    public function __construct(private ExempleRepository $exempleRepository, private EntityManagerInterface $em) {
+    public function __construct(private ExempleRepository $exempleRepository, private EntityManagerInterface $em, private SerializerInterface $serilizer) {
 
     }
 
@@ -54,6 +55,38 @@ class ApiExempleController extends AbstractController
         //retourner un json avec l'exemple
         return $this->json($data,$code,['Access-Control-Allow-Origin' => '*']);
     }
-
+    #[Route('/api/exemple/add', name: 'app_api_exemple_id', methods: 'POST')]
+    public function addExemple(Request $request) : Response
+    {
+        try{
+            //récupérer les donnée du formulaire
+            $data = $request->getContent();
+            $data= $this->serilizer->deserialize($data,Exemple::class,'json');
+            $objetExist= $this->exempleRepository->findOneBy(["name"=>$data->getName(),"value"=>$data->getValue()]);
+            if($objetExist) {
+                $message = ["error" => "L'exemple existe déjà"];
+                $code = 400;
+            }
+            else {
+                $message = ["success" => "L'exemple a été ajouté"];
+                $this->em->persist($data);
+                $this->em->flush();
+                $code = 200;
+            }
+        }
+        catch(\Exception $e) {
+            $message = ["error" => $e->getMessage()];
+            $code = 400;
+        }
+         
+         return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
+    }
+    #[Route('/api/exemple/updateV2', name: 'app_api_exemple_id', methods: 'PUT')]
+    public function updateExempleV2(Request $request) : Response{
+        $data = $request->getContent();
+        $data= $this->serilizer->deserialize($data,Exemple::class,'json');
+        dd($data);
+    }
 
 }
+
