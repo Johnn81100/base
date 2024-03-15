@@ -170,4 +170,25 @@ class ApiExempleController extends AbstractController
         //retourner un json de reponse
         return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
     }
+
+    #[Route('/api/exemple/delete/{id}', name : 'app_api_exemple_delete', methods:'DELETE')]
+    public function deleteExemple($id) :Response 
+    {
+        //récupérer l'objet
+        $exemple = $this->exempleRepository->find($id);
+        //tester si il existe
+        if($exemple) {
+            $this->em->remove($exemple);
+            $this->em->flush();
+            $message = ["confirm" => "l'exemple a été supprimé"] ;
+            $code = 200; 
+        }
+        //tester si il n'existe pas
+        else {
+            $message = ["error" => "l'exemple n'existe pas"];
+            $code = 400;
+        }
+        //retourner un json de reponse
+        return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
+    }
 }
