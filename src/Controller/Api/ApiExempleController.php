@@ -41,7 +41,7 @@ class ApiExempleController extends AbstractController
         return $this->json($data, $code, ['Access-Control-Allow-Origin' => '*']);
     }
 
-    #[Route('/api/exemple/id/{id}', name: 'app_api_exemple_id', methods: 'GET')]
+    #[Route('/api/exemple/{id}', name: 'app_api_exemple_id', methods: 'GET')]
     public function getExempleId($id): Response
     {
         //récupérer l'enregistrement
@@ -60,7 +60,7 @@ class ApiExempleController extends AbstractController
         return $this->json($data, $code, ['Access-Control-Allow-Origin' => '*']);
     }
 
-    #[Route('/api/exemple/add', name: 'app_api_exemple_add', methods:'POST')]
+    #[Route('/api/exemple', name: 'app_api_exemple_add', methods:'POST')]
     public function addExemple(Request $request) :Response 
     {   
         try {
@@ -91,7 +91,7 @@ class ApiExempleController extends AbstractController
         return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
     }
 
-    #[Route('/api/exemple/update', name: 'app_api_exemple_update', methods:'PUT')]
+    #[Route('/api/exemple', name: 'app_api_exemple_update', methods:'PUT')]
     public function updateExemple(Request $request) : Response 
     {
         try {
@@ -128,7 +128,7 @@ class ApiExempleController extends AbstractController
     }
 
 
-    #[Route('/api/exemple/updatev2', name:'app_api_exemple_updatev2', methods:'PUT')]
+    #[Route('/api/exemple', name:'app_api_exemple_updatev2', methods:'PATCH')]
     public function updateExempleV2(Request $request) :Response 
     {
         try {
@@ -171,7 +171,7 @@ class ApiExempleController extends AbstractController
         return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
     }
 
-    #[Route('/api/exemple/delete/{id}', name : 'app_api_exemple_delete', methods:'DELETE')]
+    #[Route('/api/exemple/{id}', name : 'app_api_exemple_delete', methods:'DELETE')]
     public function deleteExemple($id) :Response 
     {
         //récupérer l'objet
