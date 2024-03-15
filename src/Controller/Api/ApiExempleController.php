@@ -91,5 +91,39 @@ class ApiExempleController extends AbstractController
         return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
     }
 
-    
+    #[Route('/api/exemple/update', name: 'app_api_exemple_update', methods:'PUT')]
+    public function updateExemple(Request $request) : Response 
+    {
+        try {
+            //récupérer le json
+            $json = $request->getContent();
+            //convertir le json en tableau
+            $data = $this->serializer->decode($json, "json");
+            //récupérer l'objet exemple
+            $oldExemple = $this->exempleRepository->findOneBy(["name"=>$data["name"], "value" => $data["value"] ]);
+            //test si l'objet exemple existe
+            if($oldExemple){
+                //setter les nouvelles valeurs
+                $oldExemple->setName($data["newname"]);
+                $oldExemple->setValue($data["newvalue"]);
+                //persister les données
+                $this->em->persist($oldExemple);
+                //enregistrer en BDD
+                $this->em->flush();
+                $message = ["confirm" => "l'exemple à été mis a jour en BDD", "exemple"=> $oldExemple] ;
+                $code = 200; 
+            }
+            //test si l'exemple n'existe pas
+            else{
+                $message = ["error" => "l'exemple n'existe pas"];
+                $code = 400;
+            }
+
+        } catch (\Throwable $th) {
+            $message = ["error" => $th->getMessage()];
+            $code = 400;
+        }
+        //retourner un json de reponse
+        return $this->json($message,$code,['Access-Control-Allow-Origin' => '*']);
+    }
 }
