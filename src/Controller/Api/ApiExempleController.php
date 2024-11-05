@@ -61,8 +61,7 @@ class ApiExempleController extends AbstractController
     }
 
     #[Route('/api/exemple', name: 'app_api_exemple_add', methods:'POST')]
-    public function addExemple(Request $request) :Response 
-    {   
+    public function addExemple(Request $request) :Response {
         try {
             //récupération json
             $json = $request->getContent();

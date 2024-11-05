@@ -2,12 +2,12 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use App\Entity\Utilisateur;
+use Faker;
+use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Categorie;
-use Faker;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
@@ -18,8 +18,8 @@ class AppFixtures extends Fixture
         $utilisateurs = [];
         for ($i=0; $i < 50; $i++) { 
             //création d'un objet utilisateur
-            $utilisateur = new Utilisateur();
-            $utilisateur->setNom($faker->lastName());
+            $utilisateur = new User();
+            $utilisateur->setName($faker->lastName());
             $utilisateur->setPrenom($faker->firstName('male'|'female'));
             $utilisateur->setEmail($faker->email());
             $utilisateur->setPassword($faker->md5());
